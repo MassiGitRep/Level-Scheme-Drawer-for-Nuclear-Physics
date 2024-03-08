@@ -6,7 +6,8 @@ The program requires two inputs **.csv** files:
 
 - The first one is the **transitions** file that needs to be filled as follow *(Transition_energy, Starting_level, Ending_level)*
 - The second one is the **levels** file that needs to be filled as follow *(Level_energy, Spin_Parity)*
-    *See Transitions.csv and Levels.csv as examples*
+
+   *See Transitions.csv and Levels.csv as examples*
 
 Any suggestion is warmly welcomed!
 
