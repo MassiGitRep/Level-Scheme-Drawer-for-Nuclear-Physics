@@ -1,9 +1,36 @@
-import tkinter as tk
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
+import subprocess
+def install(module):
+        subprocess.check_call(['pip','install',module])
+        print(f"Installing {module} ...")
 
-from lvlDrawFunc import *
+try:
+        import tkinter as tk
+except ImportError:
+        install(tkinter)
+        import tkinter as tk
+
+try:
+        import numpy as np
+except ImportError:
+        install(numpy)
+        import numpy as np
+
+try:
+        import matplotlib.pyplot as plt
+except ImportError:
+        install(matplotlib)
+        import matplotlib.pyplot as plt
+
+try:
+        import pandas as pd
+except ImportError:
+        install(pandas)
+        import pandas as pd
+
+try:
+        from lvlDrawFunc import *
+except ImportError:
+        print("Error occured while importing lvlDrawFunc\n")
         
  
 class SetParameters(tk.Tk):
