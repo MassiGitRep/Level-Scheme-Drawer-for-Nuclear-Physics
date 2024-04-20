@@ -1,31 +1,22 @@
-import subprocess
-def install(module):
-        subprocess.check_call(['pip','install',module])
-        print(f"Installing {module} ...")
-
 try:
         import tkinter as tk
 except ImportError:
-        install(tkinter)
-        import tkinter as tk
+        Print("Unable to import TKinter, please install it before proceeding.")
 
 try:
         import numpy as np
 except ImportError:
-        install(numpy)
-        import numpy as np
+        Print("Unable to import Numpy, please install it before proceeding.")
 
 try:
         import matplotlib.pyplot as plt
 except ImportError:
-        install(matplotlib)
-        import matplotlib.pyplot as plt
+        Print("Unable to import Matplotlib, please install it before proceeding.")
 
 try:
         import pandas as pd
 except ImportError:
-        install(pandas)
-        import pandas as pd
+        Print("Unable to import TKinter, please install it before proceeding.")
 
 try:
         from lvlDrawFunc import *
