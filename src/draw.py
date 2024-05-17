@@ -32,6 +32,8 @@ class SetParameters(tk.Tk):
         self.title("Nuclear Physics Level Scheme")
         self.geometry("700x500")
         
+        self.Quit_button = tk.Button(text="Quit", command=self.destroy)
+
         self.Upload_button = tk.Button(text="Upload", command=self.UploadFiles)
         self.Draw_button = tk.Button(text="Draw", command=self.Draw)
 
@@ -45,8 +47,8 @@ class SetParameters(tk.Tk):
         self.XMax = tk.DoubleVar(self,5)
         self.Width_const = tk.DoubleVar(self,0.05)
 
-        self.Transition_file = tk.StringVar(self,"../files/transitions.csv")
-        self.Level_file = tk.StringVar(self,"../files/levels.csv")
+        self.Transition_file = tk.StringVar(self,"transitions.csv")
+        self.Level_file = tk.StringVar(self,"levels.csv")
         self.Arrow_width = tk.DoubleVar(self,0.001)
         self.Arrow_head_width = tk.DoubleVar(self,0.005*self.XMax.get())
         self.Arrow_head_length = tk.DoubleVar(self,40)
@@ -129,6 +131,7 @@ class SetParameters(tk.Tk):
         self.Stop_transition_entry.grid(row=15, column=1, padx=5, pady=5)
 
         self.Upload_button.grid(row=0, column=2, padx=50, pady=5)
+        self.Quit_button.grid(row=17,column=1, padx=50, pady=10)
         self.Draw_button.grid(row=8, column=2, padx=50, pady=5)
         self.Draw_GS_button.grid(row=16, column=0, padx=5, pady=5)
         self.Draw_All_Aligned_button.grid(row=16, column=1, padx=5, pady=5)
@@ -148,12 +151,12 @@ class SetParameters(tk.Tk):
             global _x_left_label_distance                                   
             global _x_right_label_distance
 
-            levels_pandas = pd.read_csv(self.Level_file.get(), names=['Level energy','Spin-Parity','Energy Label Position'], 
+            levels_pandas = pd.read_csv(self.Level_file.get(), names=['Level energy','Spin-Parity','Energy Label Position','Level color'], 
                                         dtype={'Level energy': float,'Spin-Parity': str})
             levels_pandas = levels_pandas.sort_values(by=['Level energy'])                  
             levels_pandas = levels_pandas.reset_index(drop=True)    
             
-            transitions_pandas = pd.read_csv(self.Transition_file.get(), dtype={"Transition energy": float, "Initial level": float, "Final level": float, "Multipolarity": str}, names=["Transition energy","Initial level","Final level", "Multipolarity"])
+            transitions_pandas = pd.read_csv(self.Transition_file.get(), dtype={"Transition energy": float, "Initial level": float, "Final level": float, "Multipolarity": str, "Transition color": str}, names=["Transition energy","Initial level","Final level", "Multipolarity", "Transition color"])
             transitions_pandas = transitions_pandas.sort_values(by=["Initial level", "Transition energy"], ascending=True)
             transitions_pandas = transitions_pandas.reset_index(drop=True)
 
@@ -166,18 +169,21 @@ class SetParameters(tk.Tk):
                 self.Stop_transition.set(transitions_pandas.shape[0])
             else:
                 pass 
-            
+           
+
             levels_pandas.at[0,'Energy Label Position'] = levels_pandas.iloc[0]['Level energy']
                                                                                     
-            # differentiating energies value and labels                                     
-            for i in range(1,levels_pandas.shape[0]):                                       
+            # differentiating energies value and labels
+            if(levels_pandas.shape[0]>=2):
+                for i in range(1,levels_pandas.shape[0]):                                       
                     if(abs(levels_pandas.iloc[i][0]-levels_pandas.iloc[i-1][2])<self.Min_vert_label_dist.get() or 
-                       levels_pandas.iloc[i][0]<levels_pandas.iloc[i-1][2]):
+                        levels_pandas.iloc[i][0]<levels_pandas.iloc[i-1][2]):
                         levels_pandas.at[i,'Energy Label Position'] = levels_pandas.iloc[i-1][2]+self.Min_vert_label_dist.get()
                                                                                     
                     else:                                                                   
                         levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]
-                                                                                    
+            else: levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]                                                                       
+            
             levels_pandas.fillna('', inplace=True)   
             
             _x_fig_start = -self.XMax.get()*self.Width_const.get()

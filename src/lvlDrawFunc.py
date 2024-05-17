@@ -27,8 +27,6 @@
 # former parameter is the energy value and the latter the spin-parity of the 
 # excited state of interest.
 
-
-
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
@@ -44,13 +42,16 @@ import matplotlib.patches as mpatches
 # call recursively all the other functions to build the level scheme deciding 
 # which levels and transitions should be drawn or not.
 
-def drawArrow(_number, _delta_x, _x_max, _energy_label, _y_init, _y_final, _multipolarity, _arrow_width, _arrow_head_width, _arrow_head_length, _fig, _subplot, _fontsize, _arrow_color):
+def drawArrow(_number, _delta_x, _x_max, _energy_label, _y_init, _y_final, _multipolarity, _arrow_color, _arrow_width, _arrow_head_width, _arrow_head_length, _fig, _subplot, _fontsize):
     
     # _delta_y is the "height" of the transition's arrow
     _delta_y = _y_final-_y_init
     
     if (_multipolarity != _multipolarity): # Check if _multipolairty is Nan
         _multipolarity = ""
+    
+    if (_arrow_color != _arrow_color): # Check if _arrow_color is Nan
+        _arrow_color = "black"
 
     _subplot.arrow(_delta_x*_number, _y_init, 0, _delta_y, width=_arrow_width, head_width=_arrow_head_width, head_length=_arrow_head_length, 
                    head_starts_at_zero=False, length_includes_head=True, color=_arrow_color);
@@ -60,9 +61,12 @@ def drawArrow(_number, _delta_x, _x_max, _energy_label, _y_init, _y_final, _mult
                         horizontalalignment='left', verticalalignment='bottom')
 
     
-def drawLevel(_energy, _y_labels_position, _spin_parity, _x_max, _x_fig_start, _x_fig_end, _x_right_label_distance, _x_left_label_distance, _fig, _subplot, _fontsize, _color="black"):
+def drawLevel(_energy, _y_labels_position, _spin_parity, _level_color, _x_max, _x_fig_start, _x_fig_end, _x_right_label_distance, _x_left_label_distance, _fig, _subplot, _fontsize):
+
+    if (_level_color != _level_color or _level_color == ""): # Checking if level color is Nan
+        _level_color = "black" 
     
-    _subplot.hlines(_energy, 0, _x_max, color=_color, linewidth=1)
+    _subplot.hlines(_energy, 0, _x_max, color=_level_color, linewidth=1)
     
     _subplot.annotate("%.0f" % _energy, xy=(0, _energy), xytext=(_x_fig_start,_y_labels_position), fontsize=_fontsize, 
                       horizontalalignment='right', verticalalignment='center')  
@@ -135,7 +139,7 @@ def drawLevelScheme(levels_pandas, transitions_pandas, _delta_x, _x_max, _x_fig_
         pass
 
     for i in range(_start_level,_stop_level):
-        drawLevel(levels_pandas.iloc[i][0],levels_pandas.iloc[i][2],str(levels_pandas.iloc[i][1]),_x_max,_x_fig_start,_x_fig_end,_x_right_label_distance,_x_left_label_distance,mainFigure,mainAx,_fontsize)
+        drawLevel(levels_pandas.iloc[i][0],levels_pandas.iloc[i][2],str(levels_pandas.iloc[i][1]),levels_pandas.iloc[i][3],_x_max,_x_fig_start,_x_fig_end,_x_right_label_distance,_x_left_label_distance,mainFigure,mainAx,_fontsize)
     
     # Check if G.S. need to be drawn
     if(_Draw_GS == 1):    
@@ -145,12 +149,13 @@ def drawLevelScheme(levels_pandas, transitions_pandas, _delta_x, _x_max, _x_fig_
 
     if(_Draw_All_Aligned == 0):
         for i in range(_start_transitions,_stop_transitions):
-            drawArrow(i-_start_transitions+0.5,_delta_x,_x_max,transitions_pandas.iloc[i][0],transitions_pandas.iloc[i][1],transitions_pandas.iloc[i][2],transitions_pandas.iloc[i][3],
-                  _arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,_fontsize,_arrow_color)
+            drawArrow(i-_start_transitions+0.5,_delta_x,_x_max,transitions_pandas.iloc[i][0],transitions_pandas.iloc[i][1],transitions_pandas.iloc[i][2],
+                      transitions_pandas.iloc[i][3],transitions_pandas.iloc[i][4],_arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,
+                      _fontsize)
     else:
         for i in range(_start_transitions,_stop_transitions):
             drawArrow(1,_delta_x,_x_max,transitions_pandas.iloc[i][0],transitions_pandas.iloc[i][1],transitions_pandas.iloc[i][2],transitions_pandas.iloc[i][3],
-                  _arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,_fontsize,_arrow_color)
+                      transitions_pandas.iloc[i][4],_arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,_fontsize)
  
     plt.show()
     #plt.savefig("lvlScheme_secondary.pdf", format="pdf", bbox_inches="tight")
