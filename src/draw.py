@@ -1,22 +1,23 @@
 try:
         import tkinter as tk
+        from tkinter import font
 except ImportError:
-        Print("Unable to import TKinter, please install it before proceeding.")
+        print("Unable to import TKinter, please install it before proceeding.")
 
 try:
         import numpy as np
 except ImportError:
-        Print("Unable to import Numpy, please install it before proceeding.")
+        print("Unable to import Numpy, please install it before proceeding.")
 
 try:
         import matplotlib.pyplot as plt
 except ImportError:
-        Print("Unable to import Matplotlib, please install it before proceeding.")
+        print("Unable to import Matplotlib, please install it before proceeding.")
 
 try:
         import pandas as pd
 except ImportError:
-        Print("Unable to import TKinter, please install it before proceeding.")
+        print("Unable to import TKinter, please install it before proceeding.")
 
 try:
         from lvlDrawFunc import *
@@ -29,19 +30,20 @@ class SetParameters(tk.Tk):
     def __init__(self):
     
         super().__init__()
-        self.title("Nuclear Physics Level Scheme")
-        self.geometry("700x500")
-        
-        self.Quit_button = tk.Button(text="Quit", command=self.destroy)
 
-        self.Upload_button = tk.Button(text="Upload", command=self.UploadFiles)
-        self.Draw_button = tk.Button(text="Draw", command=self.Draw)
+        self.title("Nuclear Physics Level Scheme")
+        self.geometry("900x500")
+        
+        self.Quit_button = tk.Button(text="Quit", command=self.destroy, font=font.Font(family='Helvetica', size=15))
+
+        self.Upload_button = tk.Button(text="Upload", command=self.UploadFiles, font=font.Font(family='Helvetica', size=15))
+        self.Draw_button = tk.Button(text="Draw", command=self.Draw, font=font.Font(family='Helvetica', size=15))
 
         self.Draw_GS = tk.BooleanVar(self, 1)
-        self.Draw_GS_button = tk.Checkbutton(self, text="Draw G.S.", variable=self.Draw_GS, onvalue=1, offvalue=0)
+        self.Draw_GS_button = tk.Checkbutton(self, text="Draw G.S.", variable=self.Draw_GS, onvalue=1, offvalue=0, font=font.Font(family='Helvetica', size=15))
         
         self.Draw_All_Aligned = tk.BooleanVar(self, 0)
-        self.Draw_All_Aligned_button = tk.Checkbutton(self, text="Draw Transitions Vertically Aligned", variable=self.Draw_All_Aligned, onvalue=1, offvalue=0)
+        self.Draw_All_Aligned_button = tk.Checkbutton(self, text="Draw Transitions Vertically Aligned", variable=self.Draw_All_Aligned, onvalue=1, offvalue=0, font=font.Font(family='Helvetica', size=15))
 
         self.Uploaded_flag = tk.BooleanVar(self,0) 
         self.XMax = tk.DoubleVar(self,5)
@@ -78,31 +80,31 @@ class SetParameters(tk.Tk):
 
     def create_widget(self):
 
-        self.Transition_file_label = tk.Label(self, text="Transition Filename: ")
-        self.Level_file_label = tk.Label(self, text="Level Filename: ")
-        self.Arrow_width_label = tk.Label(self, text="Arrow Width: ")
-        self.Arrow_head_width_label = tk.Label(self, text="Arrow Head Width: ")
-        self.Arrow_head_length_label = tk.Label(self, text="Arrow Head Length: ")
-        self.Min_vert_label_dist_label = tk.Label(self, text="Minimum Vertical Level Separation: ")
-        self.Fontsize_label = tk.Label(self, text="Fontsize: ")
-        self.Arrow_color_label = tk.Label(self, text="Arrow Color: ")
-        self.Start_level_label = tk.Label(self, text="Start Level: ")
-        self.Stop_level_label = tk.Label(self, text="Stop Level: ")
-        self.Start_transition_label = tk.Label(self, text="Start Transition: ")
-        self.Stop_transition_label = tk.Label(self, text="Stop Transition: ")
+        self.Transition_file_label = tk.Label(self, text="Transition Filename: ", font=font.Font(family='Helvetica', size=15))
+        self.Level_file_label = tk.Label(self, text="Level Filename: ", font=font.Font(family='Helvetica', size=15))
+        self.Arrow_width_label = tk.Label(self, text="Arrow Width: ", font=font.Font(family='Helvetica', size=15))
+        self.Arrow_head_width_label = tk.Label(self, text="Arrow Head Width: ", font=font.Font(family='Helvetica', size=15))
+        self.Arrow_head_length_label = tk.Label(self, text="Arrow Head Length: ", font=font.Font(family='Helvetica', size=15))
+        self.Min_vert_label_dist_label = tk.Label(self, text="Minimum Vertical Level Separation: ", font=font.Font(family='Helvetica', size=15))
+        self.Fontsize_label = tk.Label(self, text="Fontsize: ", font=font.Font(family='Helvetica', size=15))
+        self.Arrow_color_label = tk.Label(self, text="Arrow Color: ", font=font.Font(family='Helvetica', size=15))
+        self.Start_level_label = tk.Label(self, text="Start Level: ", font=font.Font(family='Helvetica', size=15))
+        self.Stop_level_label = tk.Label(self, text="Stop Level: ", font=font.Font(family='Helvetica', size=15))
+        self.Start_transition_label = tk.Label(self, text="Start Transition: ", font=font.Font(family='Helvetica', size=15))
+        self.Stop_transition_label = tk.Label(self, text="Stop Transition: ", font=font.Font(family='Helvetica', size=15))
 
-        self.Transition_file_entry = tk.Entry(self, textvariable=self.Transition_file)
-        self.Level_file_entry = tk.Entry(self, textvariable=self.Level_file)
-        self.Arrow_width_entry = tk.Entry(self, textvariable=self.Arrow_width)
-        self.Arrow_head_width_entry = tk.Entry(self, textvariable=self.Arrow_head_width)
-        self.Arrow_head_length_entry = tk.Entry(self, textvariable=self.Arrow_head_length)
-        self.Min_vert_label_dist_entry = tk.Entry(self, textvariable=self.Min_vert_label_dist)
-        self.Fontsize_entry = tk.Entry(self, textvariable=self.Fontsize)
-        self.Arrow_color_entry = tk.Entry(self, textvariable=self.Arrow_color)
-        self.Start_level_entry = tk.Entry(self, textvariable=self.Start_level)
-        self.Stop_level_entry = tk.Entry(self, textvariable=self.Stop_level)
-        self.Start_transition_entry = tk.Entry(self, textvariable=self.Start_transition)
-        self.Stop_transition_entry = tk.Entry(self, textvariable=self.Stop_transition)
+        self.Transition_file_entry = tk.Entry(self, textvariable=self.Transition_file, font=font.Font(family='Helvetica', size=15))
+        self.Level_file_entry = tk.Entry(self, textvariable=self.Level_file, font=font.Font(family='Helvetica', size=15))
+        self.Arrow_width_entry = tk.Entry(self, textvariable=self.Arrow_width, font=font.Font(family='Helvetica', size=15))
+        self.Arrow_head_width_entry = tk.Entry(self, textvariable=self.Arrow_head_width, font=font.Font(family='Helvetica', size=15))
+        self.Arrow_head_length_entry = tk.Entry(self, textvariable=self.Arrow_head_length, font=font.Font(family='Helvetica', size=15))
+        self.Min_vert_label_dist_entry = tk.Entry(self, textvariable=self.Min_vert_label_dist, font=font.Font(family='Helvetica', size=15))
+        self.Fontsize_entry = tk.Entry(self, textvariable=self.Fontsize, font=font.Font(family='Helvetica', size=15))
+        self.Arrow_color_entry = tk.Entry(self, textvariable=self.Arrow_color, font=font.Font(family='Helvetica', size=15))
+        self.Start_level_entry = tk.Entry(self, textvariable=self.Start_level, font=font.Font(family='Helvetica', size=15))
+        self.Stop_level_entry = tk.Entry(self, textvariable=self.Stop_level, font=font.Font(family='Helvetica', size=15))
+        self.Start_transition_entry = tk.Entry(self, textvariable=self.Start_transition, font=font.Font(family='Helvetica', size=15))
+        self.Stop_transition_entry = tk.Entry(self, textvariable=self.Stop_transition, font=font.Font(family='Helvetica', size=15))
 
         self.Transition_file_label.grid(row=0, column=0, padx=5, pady=5)
         self.Level_file_label.grid(row=1, column=0, padx=5, pady=5)
@@ -198,8 +200,15 @@ class SetParameters(tk.Tk):
             self.Level_file_entry.config({'background':'white'})
 
             self.Uploaded_flag.set(1)
+            
+
 
             print("File Uploaded! ")
+            self.Transition_file_label.config(fg='green')
+            self.Transition_file_entry.config({'background':'green'})
+            self.Level_file_label.config(fg='green')
+            self.Level_file_entry.config({'background':'green'})
+
 
         except:
             print("Something went wrong while uploading the file")
