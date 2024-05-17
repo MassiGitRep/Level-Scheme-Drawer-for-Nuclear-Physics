@@ -30,19 +30,23 @@ class SetParameters(tk.Tk):
     
         super().__init__()
         self.title("Nuclear Physics Level Scheme")
-        self.geometry("600x500")
+        self.geometry("700x500")
         
         self.Upload_button = tk.Button(text="Upload", command=self.UploadFiles)
         self.Draw_button = tk.Button(text="Draw", command=self.Draw)
 
         self.Draw_GS = tk.BooleanVar(self, 1)
         self.Draw_GS_button = tk.Checkbutton(self, text="Draw G.S.", variable=self.Draw_GS, onvalue=1, offvalue=0)
-        self.Uploaded_flag = tk.BooleanVar(self,0)
+        
+        self.Draw_All_Aligned = tk.BooleanVar(self, 0)
+        self.Draw_All_Aligned_button = tk.Checkbutton(self, text="Draw Transitions Vertically Aligned", variable=self.Draw_All_Aligned, onvalue=1, offvalue=0)
+
+        self.Uploaded_flag = tk.BooleanVar(self,0) 
         self.XMax = tk.DoubleVar(self,5)
         self.Width_const = tk.DoubleVar(self,0.05)
 
-        self.Transition_file = tk.StringVar(self,"../files/transitions.csv")
-        self.Level_file = tk.StringVar(self,"../files/levels.csv")
+        self.Transition_file = tk.StringVar(self,"transitions.csv")
+        self.Level_file = tk.StringVar(self,"levels.csv")
         self.Arrow_width = tk.DoubleVar(self,0.001)
         self.Arrow_head_width = tk.DoubleVar(self,0.005*self.XMax.get())
         self.Arrow_head_length = tk.DoubleVar(self,40)
@@ -127,7 +131,8 @@ class SetParameters(tk.Tk):
         self.Upload_button.grid(row=0, column=2, padx=50, pady=5)
         self.Draw_button.grid(row=8, column=2, padx=50, pady=5)
         self.Draw_GS_button.grid(row=16, column=0, padx=5, pady=5)
-    
+        self.Draw_All_Aligned_button.grid(row=16, column=1, padx=5, pady=5)
+   
     def PrintUpdatedValue(self, *args):
         pass
         
@@ -148,7 +153,7 @@ class SetParameters(tk.Tk):
             levels_pandas = levels_pandas.sort_values(by=['Level energy'])                  
             levels_pandas = levels_pandas.reset_index(drop=True)    
             
-            transitions_pandas = pd.read_csv(self.Transition_file.get(), dtype=float, names=["Transition energy","Initial level","Final level"])
+            transitions_pandas = pd.read_csv(self.Transition_file.get(), dtype={"Transition energy": float, "Initial level": float, "Final level": float, "Multipolarity": str}, names=["Transition energy","Initial level","Final level", "Multipolarity"])
             transitions_pandas = transitions_pandas.sort_values(by=["Initial level", "Transition energy"], ascending=True)
             transitions_pandas = transitions_pandas.reset_index(drop=True)
 
@@ -205,7 +210,7 @@ class SetParameters(tk.Tk):
             drawLevelScheme(levels_pandas, transitions_pandas,self.DeltaX.get(), self.XMax.get(), _x_fig_start, _x_fig_end, _x_right_label_distance,
                         _x_left_label_distance, self.Fontsize.get(), self.Start_level.get(), self.Stop_level.get(), self.Start_transition.get(), 
                         self.Stop_transition.get(), 
-                        self.Arrow_width.get(), self.Arrow_head_width.get(), self.Arrow_head_length.get(), self.Arrow_color.get(), self.Draw_GS.get())
+                        self.Arrow_width.get(), self.Arrow_head_width.get(), self.Arrow_head_length.get(), self.Arrow_color.get(), self.Draw_GS.get(), self.Draw_All_Aligned.get())
         else:
             print("No file to draw. Please upload a valid file before drawing!")
 
