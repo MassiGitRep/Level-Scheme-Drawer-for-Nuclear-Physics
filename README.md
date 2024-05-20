@@ -3,6 +3,10 @@
 #### This is my very first project. It is an elementary Python program intended to help physicists draw nuclear excitation-level schemes.
 \
 \
+To call the program move to **src** dir and use **$ python3 draw.py**. This will open a GUI that allows the user to upload the **.csv** files containing the level scheme info and to set everything before drawing.
+If the upload went well, then the first two fields will become green, otherwise, they will be highlighted in red.
+
+
 The program requires two inputs **.csv** files:
 
 - The first one is the **transitions** file that needs to be filled as follow *(Transition_energy, Starting_level, Ending_level, Spin_parity, Color)*
