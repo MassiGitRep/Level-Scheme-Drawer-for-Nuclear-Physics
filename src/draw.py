@@ -32,7 +32,7 @@ class SetParameters(tk.Tk):
         super().__init__()
 
         self.title("Nuclear Physics Level Scheme")
-        self.geometry("900x500")
+        self.geometry("900x600")
         
         self.Quit_button = tk.Button(text="Quit", command=self.destroy, font=font.Font(family='Helvetica', size=15))
 
