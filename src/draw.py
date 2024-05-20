@@ -33,8 +33,10 @@ class SetParameters(tk.Tk):
 
         self.title("Nuclear Physics Level Scheme")
         self.geometry("900x600")
-        
-        self.Quit_button = tk.Button(text="Quit", command=self.destroy, font=font.Font(family='Helvetica', size=15))
+       
+        self.protocol("WM_DELETE_WINDOW", self.destroy) # Overriding X button behavior to correctly close the window and destroy the relative process
+
+        #self.Quit_button = tk.Button(text="Quit", command=self.destroy, font=font.Font(family='Helvetica', size=15))
 
         self.Upload_button = tk.Button(text="Upload", command=self.UploadFiles, font=font.Font(family='Helvetica', size=15))
         self.Draw_button = tk.Button(text="Draw", command=self.Draw, font=font.Font(family='Helvetica', size=15))
@@ -133,7 +135,7 @@ class SetParameters(tk.Tk):
         self.Stop_transition_entry.grid(row=15, column=1, padx=5, pady=5)
 
         self.Upload_button.grid(row=0, column=2, padx=50, pady=5)
-        self.Quit_button.grid(row=17,column=1, padx=50, pady=10)
+        #self.Quit_button.grid(row=17,column=1, padx=50, pady=10)
         self.Draw_button.grid(row=8, column=2, padx=50, pady=5)
         self.Draw_GS_button.grid(row=16, column=0, padx=5, pady=5)
         self.Draw_All_Aligned_button.grid(row=16, column=1, padx=5, pady=5)
