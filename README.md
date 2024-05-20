@@ -14,12 +14,12 @@ The program requires two inputs **.csv** files:
     
 Problems to be solved:
 
-- I found out that the levels file must contain at least two lines otherwise there will be a probelm when loading the file.
+- I found out that the levels file must contain at least two lines otherwise there will be a problem when loading the file.
    *See Transitions.csv and Levels.csv as examples*
 - If matplotlib canvas is closed (pressing X button) after resizing the figure (using the 'Configure Subplots' button) TKinter can't invoke destroy Method and an error is raised. 
 
 GUI preview
-![alt text](https://github.com/MassiGitRep/Level-Scheme-Drawer-for-Nuclear_Physics/edit/main/GUI_new.png?raw=true)
+![GUI preview](https://github.com/MassiGitRep/Level-Scheme-Drawer-for-Nuclear-Physics/blob/main/images/GUI_new.png)
 
 \
 \
