@@ -18,6 +18,9 @@ Problems to be solved:
    *See Transitions.csv and Levels.csv as examples*
 - If matplotlib canvas is closed (pressing X button) after resizing the figure (using the 'Configure Subplots' button) TKinter can't invoke destroy Method and an error is raised. 
 
+GUI preview
+![alt text](https://github.com/MassiGitRep/Level-Scheme-Drawer-for-Nuclear_Physics/edit/main/GUI_new.png?raw=true)
+
 \
 \
 Any suggestion is warmly welcomed!
