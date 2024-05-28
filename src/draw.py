@@ -156,6 +156,16 @@ class SetParameters(tk.Tk):
             global _x_fig_end                                      
             global _x_left_label_distance                                   
             global _x_right_label_distance
+            
+            self.Uploaded_flag.set(0)
+            self.Start_level.set(0)
+            self.Stop_level.set(-1)
+            self.Start_transition.set(0)
+            self.Stop_transition.set(-1)
+            self.DeltaX.set(self)
+            
+            levels_pandas = []
+            transitions_pandas = []
 
             levels_pandas = pd.read_csv(self.Level_file.get(), names=['Level energy','Spin-Parity','Energy Label Position','Level color'], 
                                         dtype={'Level energy': float,'Spin-Parity': str, 'Energy Label Position': str, 'Level color': str})
@@ -205,8 +215,6 @@ class SetParameters(tk.Tk):
 
             self.Uploaded_flag.set(1)
             
-
-
             print("File Uploaded! ")
             self.Transition_file_label.config(fg='green')
             self.Transition_file_entry.config({'background':'green'})
@@ -215,7 +223,10 @@ class SetParameters(tk.Tk):
 
 
         except:
+            self.Uploaded_flag.set(0)
+
             print("Something went wrong while uploading the file")
+            
             self.Transition_file_label.config(fg='red')
             self.Transition_file_entry.config({'background':'red'})
             self.Level_file_label.config(fg='red')
