@@ -51,8 +51,8 @@ class SetParameters(tk.Tk):
         self.XMax = tk.DoubleVar(self,5)
         self.Width_const = tk.DoubleVar(self,0.05)
 
-        self.Transition_file = tk.StringVar(self,"transitions.csv")
-        self.Level_file = tk.StringVar(self,"levels.csv")
+        self.Transition_file = tk.StringVar(self,"../files/transitions.csv")
+        self.Level_file = tk.StringVar(self,"../files/levels.csv")
         self.Arrow_width = tk.DoubleVar(self,0.001)
         self.Arrow_head_width = tk.DoubleVar(self,0.005*self.XMax.get())
         self.Arrow_head_length = tk.DoubleVar(self,40)
