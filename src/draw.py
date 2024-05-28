@@ -11,6 +11,8 @@ except ImportError:
 
 try:
         import matplotlib.pyplot as plt
+        from matplotlib.figure import Figure
+        from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg 
 except ImportError:
         print("Unable to import Matplotlib, please install it before proceeding.")
 
@@ -51,8 +53,8 @@ class SetParameters(tk.Tk):
         self.XMax = tk.DoubleVar(self,5)
         self.Width_const = tk.DoubleVar(self,0.05)
 
-        self.Transition_file = tk.StringVar(self,"transitions.csv")
-        self.Level_file = tk.StringVar(self,"levels.csv")
+        self.Transition_file = tk.StringVar(self,"../files/transitions.csv")
+        self.Level_file = tk.StringVar(self,"../files/levels.csv")
         self.Arrow_width = tk.DoubleVar(self,0.001)
         self.Arrow_head_width = tk.DoubleVar(self,0.005*self.XMax.get())
         self.Arrow_head_length = tk.DoubleVar(self,40)
@@ -156,7 +158,7 @@ class SetParameters(tk.Tk):
             global _x_right_label_distance
 
             levels_pandas = pd.read_csv(self.Level_file.get(), names=['Level energy','Spin-Parity','Energy Label Position','Level color'], 
-                                        dtype={'Level energy': float,'Spin-Parity': str})
+                                        dtype={'Level energy': float,'Spin-Parity': str, 'Energy Label Position': str, 'Level color': str})
             levels_pandas = levels_pandas.sort_values(by=['Level energy'])                  
             levels_pandas = levels_pandas.reset_index(drop=True)    
             
@@ -180,9 +182,9 @@ class SetParameters(tk.Tk):
             # differentiating energies value and labels
             if(levels_pandas.shape[0]>=2):
                 for i in range(1,levels_pandas.shape[0]):                                       
-                    if(abs(levels_pandas.iloc[i][0]-levels_pandas.iloc[i-1][2])<self.Min_vert_label_dist.get() or 
-                        levels_pandas.iloc[i][0]<levels_pandas.iloc[i-1][2]):
-                        levels_pandas.at[i,'Energy Label Position'] = levels_pandas.iloc[i-1][2]+self.Min_vert_label_dist.get()
+                    if(abs( levels_pandas.iloc[i]['Level energy'] - levels_pandas.iloc[i-1]['Energy Label Position'] ) < self.Min_vert_label_dist.get() or 
+                        levels_pandas.iloc[i]['Level energy'] < levels_pandas.iloc[i-1]['Energy Label Position'] ):
+                        levels_pandas.at[i,'Energy Label Position'] = levels_pandas.iloc[i-1]['Energy Label Position'] + self.Min_vert_label_dist.get()
                                                                                     
                     else:                                                                   
                         levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]
@@ -224,10 +226,23 @@ class SetParameters(tk.Tk):
         if(self.Uploaded_flag.get() == 1):
             plt.rcParams['figure.figsize'] = [250,170]
             self.DeltaX.set(self.XMax.get()/(self.Stop_transition.get()-self.Start_transition.get()))
-            drawLevelScheme(levels_pandas, transitions_pandas,self.DeltaX.get(), self.XMax.get(), _x_fig_start, _x_fig_end, _x_right_label_distance,
+            
+            drawing_fig = Figure()
+            drawing_subplot = drawing_fig.add_subplot(111)
+
+            drawLevelScheme(drawing_fig, drawing_subplot, levels_pandas, transitions_pandas, self.DeltaX.get(), self.XMax.get(), _x_fig_start, _x_fig_end, _x_right_label_distance,
                         _x_left_label_distance, self.Fontsize.get(), self.Start_level.get(), self.Stop_level.get(), self.Start_transition.get(), 
                         self.Stop_transition.get(), 
                         self.Arrow_width.get(), self.Arrow_head_width.get(), self.Arrow_head_length.get(), self.Arrow_color.get(), self.Draw_GS.get(), self.Draw_All_Aligned.get())
+            
+            drawing_window = tk.Tk()
+            drawing_window.title("Level Scheme")
+            drawing_window.protocol('WM_DELETE_WINDOW',drawing_window.destroy)
+
+            canvas = FigureCanvasTkAgg(drawing_fig, master = drawing_window)
+            canvas.draw()
+            canvas.get_tk_widget().pack()
+
         else:
             print("No file to draw. Please upload a valid file before drawing!")
 

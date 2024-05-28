@@ -119,11 +119,12 @@ def drawGS(_y_position, _energy_label, _spin_parity, _x_max, _x_fig_start, _x_fi
     _subplot.add_patch(_energy_label)
 
 
-def drawLevelScheme(levels_pandas, transitions_pandas, _delta_x, _x_max, _x_fig_start, _x_fig_end, _x_right_label_distance, _x_left_label_distance, _fontsize, _start_level, _stop_level, _start_transitions, _stop_transitions, _arrow_width, _arrow_head_width, _arrow_head_length, _arrow_color, _Draw_GS, _Draw_All_Aligned):
-    mainFigure, mainAx = plt.subplots()
-    plt.tick_params(left = False, right = False , labelleft = False , labelbottom = False, bottom = False) 
-    plt.axis('off')
-
+def drawLevelScheme(_fig, _subplot, levels_pandas, transitions_pandas, _delta_x, _x_max, _x_fig_start, _x_fig_end, _x_right_label_distance, _x_left_label_distance, _fontsize, _start_level, _stop_level, _start_transitions, _stop_transitions, _arrow_width, _arrow_head_width, _arrow_head_length, _arrow_color, _Draw_GS, _Draw_All_Aligned):
+    
+    mainFigure = _fig
+    mainAx = _subplot
+    mainAx.tick_params(left = False, right = False , labelleft = False , labelbottom = False, bottom = False) 
+    mainAx.axis('off')
     mainAx.hlines(-300, _x_fig_start, _x_fig_end, color="white")
     
     # The researcher don't need to be aware of the exact number of levels and 
@@ -139,7 +140,7 @@ def drawLevelScheme(levels_pandas, transitions_pandas, _delta_x, _x_max, _x_fig_
         pass
 
     for i in range(_start_level,_stop_level):
-        drawLevel(levels_pandas.iloc[i][0],levels_pandas.iloc[i][2],str(levels_pandas.iloc[i][1]),levels_pandas.iloc[i][3],_x_max,_x_fig_start,_x_fig_end,_x_right_label_distance,_x_left_label_distance,mainFigure,mainAx,_fontsize)
+        drawLevel(levels_pandas.iloc[i]['Level energy'],levels_pandas.iloc[i]['Energy Label Position'],str(levels_pandas.iloc[i]['Spin-Parity']),levels_pandas.iloc[i]['Level color'],_x_max,_x_fig_start,_x_fig_end,_x_right_label_distance,_x_left_label_distance,mainFigure,mainAx,_fontsize)
     
     # Check if G.S. need to be drawn
     if(_Draw_GS == 1):    
@@ -149,13 +150,12 @@ def drawLevelScheme(levels_pandas, transitions_pandas, _delta_x, _x_max, _x_fig_
 
     if(_Draw_All_Aligned == 0):
         for i in range(_start_transitions,_stop_transitions):
-            drawArrow(i-_start_transitions+0.5,_delta_x,_x_max,transitions_pandas.iloc[i][0],transitions_pandas.iloc[i][1],transitions_pandas.iloc[i][2],
-                      transitions_pandas.iloc[i][3],transitions_pandas.iloc[i][4],_arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,
+            drawArrow(i-_start_transitions+0.5,_delta_x,_x_max,transitions_pandas.iloc[i]['Transition energy'],transitions_pandas.iloc[i]['Initial level'],transitions_pandas.iloc[i]['Final level'],
+                      transitions_pandas.iloc[i]['Multipolarity'],transitions_pandas.iloc[i]['Transition color'],_arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,
                       _fontsize)
     else:
         for i in range(_start_transitions,_stop_transitions):
-            drawArrow(1,_delta_x,_x_max,transitions_pandas.iloc[i][0],transitions_pandas.iloc[i][1],transitions_pandas.iloc[i][2],transitions_pandas.iloc[i][3],
-                      transitions_pandas.iloc[i][4],_arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,_fontsize)
+            drawArrow(1,_delta_x,_x_max,transitions_pandas.iloc[i]['Transition energy'],transitions_pandas.iloc[i]['Initial level'],transitions_pandas.iloc[i]['Final level'],transitions_pandas.iloc[i]['Multipolarity'],
+                      transitions_pandas.iloc[i]['Transition color'],_arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,_fontsize)
  
-    plt.show()
     #plt.savefig("lvlScheme_secondary.pdf", format="pdf", bbox_inches="tight")
