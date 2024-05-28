@@ -237,6 +237,7 @@ class SetParameters(tk.Tk):
             
             drawing_window = tk.Tk()
             drawing_window.title("Level Scheme")
+            drawing_window.geometry("800x800")
             drawing_window.protocol('WM_DELETE_WINDOW',drawing_window.destroy)
 
             canvas = FigureCanvasTkAgg(drawing_fig, master = drawing_window)
