@@ -253,13 +253,10 @@ class SetParameters(tk.Tk):
             drawing_window.geometry("800x800")
             drawing_window.protocol('WM_DELETE_WINDOW',drawing_window.destroy)
 
-            print("drawing_window finished")
-
             canvas = FigureCanvasTkAgg(drawing_fig, master = drawing_window)
             canvas.draw()
             canvas.get_tk_widget().pack()
 
-            print("canvas finished")
         else:
             print("No file to draw. Please upload a valid file before drawing!")
 
