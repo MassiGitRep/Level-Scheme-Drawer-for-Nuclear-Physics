@@ -34,10 +34,6 @@ import matplotlib.patches as mpatches
 # the code: drawArrow() and drawLevel(), as name suggest, just respectively 
 # draw lines corresponding to gamma-ray transitions and excited levels.
 #
-# G.S. and (possibly) binding-level are treated differently to gave the 
-# possibility to draw them wherever one wants but the functions behavior are 
-# the same as drawLevel().
-#
 # drawScheme() is the one function called directly by the program that just 
 # call recursively all the other functions to build the level scheme deciding 
 # which levels and transitions should be drawn or not.
@@ -82,24 +78,7 @@ def drawLevel(_energy, _y_labels_position, _spin_parity, _level_color, _x_max, _
                                    arrowstyle='-', mutation_scale=20)
     _subplot.add_patch(_energy_label)
     
-
-def drawBinding(_y_position, _energy_label, _spin_parity, _fig, _subplot, _x_max, _x_fig_start, _x_fig_end, _x_right_label_distance, _x_left_label_distance, _fontsize, _color="black", _width=2):
-    
-    _subplot.hlines(_y_position, 0, _x_max, color=_color, linewidth=_width)
-    _subplot.annotate(str(_energy_label), xy=(0, _y_position), xytext=(_x_fig_start,_y_position), fontsize=_fontsize,
-                      horizontalalignment='right', verticalalignment='center')  
-    _subplot.annotate(_spin_parity, xy=(_x_max, _y_position), xytext=(_x_fig_end, _y_position), fontsize=_fontsize, 
-                      horizontalalignment='left', verticalalignment='center')
-    
-    _spin_label = mpatches.FancyArrowPatch((_x_max, _y_position), (_x_right_label_distance, _y_position),
-                                       arrowstyle='-', mutation_scale=20, linewidth=_width)
-    _subplot.add_patch(_spin_label)
-    
-    _energy_label = mpatches.FancyArrowPatch((0, _y_position), (_x_left_label_distance,_y_position),
-                                   arrowstyle='-', mutation_scale=20, linewidth=_width)
-    _subplot.add_patch(_energy_label)
-    
-    
+   
 def drawGS(_y_position, _energy_label, _spin_parity, _x_max, _x_fig_start, _x_fig_end, _x_right_label_distance, _x_left_label_distance, _fig, _subplot,_fontsize, _color="black", _width=2):
     
     _subplot.hlines(_y_position, 0, _x_max, color=_color, linewidth=_width)
