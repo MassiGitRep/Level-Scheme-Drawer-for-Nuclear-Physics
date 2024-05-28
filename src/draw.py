@@ -254,7 +254,7 @@ class SetParameters(tk.Tk):
             drawing_window.protocol('WM_DELETE_WINDOW',drawing_window.destroy)
 
             canvas = FigureCanvasTkAgg(drawing_fig, master = drawing_window)
-            canvas.draw()
+            #canvas.draw()
             canvas.get_tk_widget().pack()
 
         else:
