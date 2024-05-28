@@ -39,7 +39,7 @@ import matplotlib.patches as mpatches
 # which levels and transitions should be drawn or not.
 
 def drawArrow(_number, _delta_x, _x_max, _energy_label, _y_init, _y_final, _multipolarity, _arrow_color, _arrow_width, _arrow_head_width, _arrow_head_length, _fig, _subplot, _fontsize):
-    
+     
     # _delta_y is the "height" of the transition's arrow
     _delta_y = _y_final-_y_init
     
@@ -55,10 +55,10 @@ def drawArrow(_number, _delta_x, _x_max, _energy_label, _y_init, _y_final, _mult
     _subplot.annotate(str("%.0f" % _energy_label) + " " + str(_multipolarity), (_delta_x*_number, _y_init), rotation=60, rotation_mode='anchor', 
                     xytext=(_delta_x*_number, _y_init+0.01*_y_init), fontsize=_fontsize, 
                         horizontalalignment='left', verticalalignment='bottom')
-
+    
     
 def drawLevel(_energy, _y_labels_position, _spin_parity, _level_color, _x_max, _x_fig_start, _x_fig_end, _x_right_label_distance, _x_left_label_distance, _fig, _subplot, _fontsize):
-
+    
     if (_level_color != _level_color or _level_color == ""): # Checking if level color is Nan
         _level_color = "black" 
     
@@ -130,11 +130,9 @@ def drawLevelScheme(_fig, _subplot, levels_pandas, transitions_pandas, _delta_x,
     if(_Draw_All_Aligned == 0):
         for i in range(_start_transitions,_stop_transitions):
             drawArrow(i-_start_transitions+0.5,_delta_x,_x_max,transitions_pandas.iloc[i]['Transition energy'],transitions_pandas.iloc[i]['Initial level'],transitions_pandas.iloc[i]['Final level'],
-                      transitions_pandas.iloc[i]['Multipolarity'],transitions_pandas.iloc[i]['Transition color'],_arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,
-                      _fontsize)
+                      transitions_pandas.iloc[i]['Multipolarity'],transitions_pandas.iloc[i]['Transition color'],_arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,_fontsize)
+    
     else:
         for i in range(_start_transitions,_stop_transitions):
             drawArrow(1,_delta_x,_x_max,transitions_pandas.iloc[i]['Transition energy'],transitions_pandas.iloc[i]['Initial level'],transitions_pandas.iloc[i]['Final level'],transitions_pandas.iloc[i]['Multipolarity'],
                       transitions_pandas.iloc[i]['Transition color'],_arrow_width,_arrow_head_width,_arrow_head_length,mainFigure,mainAx,_fontsize)
- 
-    #plt.savefig("lvlScheme_secondary.pdf", format="pdf", bbox_inches="tight")

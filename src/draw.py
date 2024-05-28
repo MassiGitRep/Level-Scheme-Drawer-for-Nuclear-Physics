@@ -216,6 +216,7 @@ class SetParameters(tk.Tk):
             self.Uploaded_flag.set(1)
             
             print("File Uploaded! ")
+
             self.Transition_file_label.config(fg='green')
             self.Transition_file_entry.config({'background':'green'})
             self.Level_file_label.config(fg='green')
@@ -223,6 +224,7 @@ class SetParameters(tk.Tk):
 
 
         except:
+
             self.Uploaded_flag.set(0)
 
             print("Something went wrong while uploading the file")
@@ -245,19 +247,21 @@ class SetParameters(tk.Tk):
                         _x_left_label_distance, self.Fontsize.get(), self.Start_level.get(), self.Stop_level.get(), self.Start_transition.get(), 
                         self.Stop_transition.get(), 
                         self.Arrow_width.get(), self.Arrow_head_width.get(), self.Arrow_head_length.get(), self.Arrow_color.get(), self.Draw_GS.get(), self.Draw_All_Aligned.get())
-            
+           
             drawing_window = tk.Tk()
             drawing_window.title("Level Scheme")
             drawing_window.geometry("800x800")
             drawing_window.protocol('WM_DELETE_WINDOW',drawing_window.destroy)
 
+            print("drawing_window finished")
+
             canvas = FigureCanvasTkAgg(drawing_fig, master = drawing_window)
             canvas.draw()
             canvas.get_tk_widget().pack()
 
+            print("canvas finished")
         else:
             print("No file to draw. Please upload a valid file before drawing!")
-
 
 if __name__ == "__main__":
     
