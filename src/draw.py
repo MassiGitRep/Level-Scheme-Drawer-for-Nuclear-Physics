@@ -13,6 +13,7 @@ try:
         import matplotlib.pyplot as plt
         from matplotlib.figure import Figure
         from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg 
+        import matplotlib.backends.backend_tkagg as tkagg
 except ImportError:
         print("Unable to import Matplotlib, please install it before"+
               " proceeding.")
@@ -367,6 +368,7 @@ class SetParameters(tk.Tk):
 
             canvas = FigureCanvasTkAgg(drawing_fig, master = drawing_window)
             #canvas.draw()
+            tkagg.NavigationToolbar2Tk(canvas, drawing_window)
             canvas.get_tk_widget().pack()
 
         else:
