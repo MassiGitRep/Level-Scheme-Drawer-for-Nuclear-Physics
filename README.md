@@ -10,7 +10,7 @@ If the upload went well, then the first two fields will become green, otherwise,
 The program requires two inputs **.csv** files:
 
 - The first one is the **transitions** file that needs to be filled as follow *(Transition_energy, Starting_level, Ending_level, Spin_parity, Color)*
-- The second one is the **levels** file that needs to be filled as follow *(Level_energy, Spin_Parity, Color)*
+- The second one is the **levels** file that needs to be filled as follow *(Level_energy, Spin_Parity, Level_Position , Color)*
     
 Problems to be solved:
 
