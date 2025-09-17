@@ -74,10 +74,9 @@ class SetParameters(tk.Tk):
         self.Arrow_width = tk.DoubleVar(self,0.001)
         self.Arrow_head_width = tk.DoubleVar(self,0.005*self.XMax.get())
         self.Arrow_head_length = tk.DoubleVar(self,40)
-        self.Energy_label_rotation = tk.DoubleVar(self,60)
+        self.Energy_label_rotation = tk.DoubleVar(self,90)
         self.Min_vert_label_dist = tk.DoubleVar(self,80)
         self.Fontsize = tk.IntVar(self,16)
-        self.Level_spacing = tk.DoubleVar(self,100)
         self.Arrow_color = tk.StringVar(self,"black")
         self.Start_level = tk.IntVar(self,0)
         self.Stop_level = tk.IntVar(self,-1)
@@ -95,7 +94,6 @@ class SetParameters(tk.Tk):
         self.Energy_label_rotation.trace_add("write", self.PrintUpdatedValue)
         self.Min_vert_label_dist.trace_add("write", self.PrintUpdatedValue)
         self.Fontsize.trace_add("write", self.PrintUpdatedValue)
-        self.Level_spacing.trace_add("write", self.PrintUpdatedValue)
         self.Arrow_color.trace_add("write", self.PrintUpdatedValue)
         self.Start_level.trace_add("write", self.PrintUpdatedValue)
         self.Stop_level.trace_add("write", self.PrintUpdatedValue)
@@ -132,9 +130,6 @@ class SetParameters(tk.Tk):
         self.Fontsize_label = tk.Label(self, text="Fontsize: ", 
                                        font=font.Font(family='Helvetica', 
                                                       size=15))
-        self.Level_spacing_label = tk.Label(self, text="Level spacing: ",
-                                      font=font.Font(family='Helvetica',
-                                                     size=15))
         self.Arrow_color_label = tk.Label(self, text="Arrow Color: ", 
                                           font=font.Font(family='Helvetica', 
                                                          size=15))
@@ -188,9 +183,6 @@ class SetParameters(tk.Tk):
         self.Fontsize_entry = tk.Entry(self, textvariable=self.Fontsize, 
                                        font=font.Font(family='Helvetica', 
                                                       size=15))
-        self.Level_spacing_entry = tk.Entry(self, textvariable=self.Level_spacing,
-                                      font=font.Font(family='Helvetica',
-                                                     size=15))
         self.Arrow_color_entry = tk.Entry(self, textvariable=self.Arrow_color,
                                           font=font.Font(family='Helvetica',
                                                          size=15))
@@ -220,7 +212,6 @@ class SetParameters(tk.Tk):
         self.Energy_label_rotation_label.grid(row=9, column=0, padx=5, pady=5)
         self.Min_vert_label_dist_label.grid(row=10, column=0, padx=5, pady=5)
         self.Fontsize_label.grid(row=11, column=0, padx=5, pady=5)
-        self.Level_spacing_label.grid(row=12, column=0, padx=5, pady=5)
         self.Arrow_color_label.grid(row=13, column=0, padx=5, pady=5)
         self.Start_level_label.grid(row=14, column=0, padx=5, pady=5)
         self.Stop_level_label.grid(row=15, column=0, padx=5, pady=5)
@@ -235,7 +226,6 @@ class SetParameters(tk.Tk):
         self.Energy_label_rotation_entry.grid(row=9, column=1, padx=5, pady=5)
         self.Min_vert_label_dist_entry.grid(row=10, column=1, padx=5, pady=5)
         self.Fontsize_entry.grid(row=11, column=1, padx=5, pady=5)
-        self.Level_spacing_entry.grid(row=12, column=1, padx=5, pady=5)
         self.Arrow_color_entry.grid(row=13, column=1, padx=5, pady=5)
         self.Start_level_entry.grid(row=14, column=1, padx=5, pady=5)
         self.Stop_level_entry.grid(row=15, column=1, padx=5, pady=5)
@@ -318,20 +308,18 @@ class SetParameters(tk.Tk):
             # differentiating energies value and labels
             if(levels_pandas.shape[0]>=2):
                 for i in range(1,levels_pandas.shape[0]):                                       
-                    if(abs( levels_pandas.iloc[i]['Level energy'] - 
-                           levels_pandas.iloc[i-1]['Energy Label Position'] ) 
-                        < self.Min_vert_label_dist.get() 
-                       or 
-                        levels_pandas.iloc[i]['Level energy'] < 
-                        levels_pandas.iloc[i-1]['Energy Label Position'] ):
-
-                        levels_pandas.at[i,'Energy Label Position'] = levels_pandas.iloc[i-1]['Energy Label Position'] + self.Level_spacing.get()
+                    if(abs( levels_pandas.iloc[i]['Level energy'] - levels_pandas.iloc[i-1]['Energy Label Position'] ) < self.Min_vert_label_dist.get() or levels_pandas.iloc[i]['Level energy'] < levels_pandas.iloc[i-1]['Energy Label Position'] ):
+                        if(i>2 and abs(levels_pandas['Energy Label Position'][i-1] - levels_pandas['Energy Label Position'][i-2]) > 2*self.Min_vert_label_dist.get()):
+                            levels_pandas.at[i-1,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] - self.Min_vert_label_dist.get()
+                            levels_pandas.at[i,'Energy Label Position'] = levels_pandas.at[i,'Level energy']
+                        else:
+                            levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] + self.Min_vert_label_dist.get()
                                                                                     
                     else:                                                                   
                         levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]
             else: 
                 levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]                                                                       
-            
+        
             levels_pandas.fillna('', inplace=True)   
             
             _x_fig_start = -self.XMax.get()*self.Width_const.get()

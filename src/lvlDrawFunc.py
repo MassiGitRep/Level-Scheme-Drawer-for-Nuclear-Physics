@@ -40,7 +40,7 @@ import matplotlib.patches as mpatches
 
 def drawArrow(_number, _delta_x, _x_max, _energy_label,_energy_label_rotation, _y_init, _y_final, 
               _multipolarity, _arrow_color, _arrow_width, _arrow_head_width, 
-              _arrow_head_length, _fig, _subplot, _fontsize):
+              _arrow_head_length, _fig, _subplot, _fontsize,_draw_gs=1,_offset=0):
      
     # _delta_y is the "height" of the transition's arrow
     _delta_y = _y_final-_y_init
@@ -51,29 +51,42 @@ def drawArrow(_number, _delta_x, _x_max, _energy_label,_energy_label_rotation, _
     if (_arrow_color != _arrow_color): # Check if _arrow_color is Nan
         _arrow_color = "black"
 
-    _subplot.arrow(_delta_x*_number, _y_init, 0, _delta_y, width=_arrow_width, 
+    if (_draw_gs==0):
+        pass
+    else:
+        _offset=0
+
+    _subplot.arrow(_delta_x*_number, _y_init-_offset, 0, _delta_y, width=_arrow_width, 
                    head_width=_arrow_head_width, head_length=_arrow_head_length, 
                    head_starts_at_zero=False, length_includes_head=True, 
                    color=_arrow_color);
     
     _subplot.annotate(str("%.0f" % _energy_label) + " " + str(_multipolarity), 
-                      (_delta_x*_number, _y_init), rotation=_energy_label_rotation, rotation_mode=
-                      'anchor', xytext=(_delta_x*_number, _y_init+0.01*_y_init),
-                      fontsize=_fontsize, horizontalalignment='left', 
-                      verticalalignment='bottom',
-                      color=_arrow_color)
+                      (_delta_x*_number, _y_init-_offset), rotation=_energy_label_rotation, rotation_mode=
+                      'anchor', xytext=(_delta_x*_number, _y_init+_delta_y/2.-_offset),
+                      fontsize=_fontsize, horizontalalignment='center', 
+                      verticalalignment='center',
+                      color=_arrow_color,
+                      bbox=dict(facecolor="white",edgecolor="white",pad=0.3))
     
     
 def drawLevel(_energy, _y_labels_position, _spin_parity, _level_color, _x_max, 
               _x_fig_start, _x_fig_end, _x_right_label_distance, 
-              _x_left_label_distance, _fig, _subplot, _fontsize):
-    
+              _x_left_label_distance, _fig, _subplot, _fontsize,_draw_gs=1,_offset=0):
+
     if (_level_color != _level_color or _level_color == ""): # Checking if level color is Nan
         _level_color = "black" 
     
+    if (_draw_gs==0):
+        _real_energy = _energy
+        _energy -=_offset
+        _y_labels_position -= _offset
+    else:
+        _real_energy = _energy 
+
     _subplot.hlines(_energy, 0, _x_max, color=_level_color, linewidth=1)
     
-    _subplot.annotate("%.0f" % _energy, xy=(0, _energy), xytext=(_x_fig_start,
+    _subplot.annotate("%.0f" % _real_energy, xy=(0, _energy), xytext=(_x_fig_start,
                         _y_labels_position), fontsize=_fontsize, 
                         horizontalalignment='right', verticalalignment='center', color=_level_color)  
     _subplot.annotate(_spin_parity, xy=(_x_max, _energy), xytext=(_x_fig_end, 
@@ -151,7 +164,7 @@ def drawLevelScheme(_fig, _subplot, levels_pandas, transitions_pandas, _delta_x,
                   str(levels_pandas.iloc[i]['Spin-Parity']),
                   levels_pandas.iloc[i]['Level color'],
                   _x_max,_x_fig_start,_x_fig_end,_x_right_label_distance,
-                  _x_left_label_distance,mainFigure,mainAx,_fontsize)
+                  _x_left_label_distance,mainFigure,mainAx,_fontsize,_Draw_GS,levels_pandas.iloc[_start_level]['Level energy'])
     
     # Check if G.S. need to be drawn
     if(_Draw_GS == 1):    
@@ -171,7 +184,7 @@ def drawLevelScheme(_fig, _subplot, levels_pandas, transitions_pandas, _delta_x,
                       transitions_pandas.iloc[i]['Multipolarity'],
                       transitions_pandas.iloc[i]['Transition color'],
                       _arrow_width,_arrow_head_width,_arrow_head_length,
-                      mainFigure,mainAx,_fontsize)
+                      mainFigure,mainAx,_fontsize,_Draw_GS,levels_pandas.iloc[_start_level]['Level energy'])
     
     else:
         for i in range(_start_transitions,_stop_transitions):
@@ -183,4 +196,4 @@ def drawLevelScheme(_fig, _subplot, levels_pandas, transitions_pandas, _delta_x,
                       transitions_pandas.iloc[i]['Multipolarity'],
                       transitions_pandas.iloc[i]['Transition color'],
                       _arrow_width,_arrow_head_width,_arrow_head_length,
-                      mainFigure,mainAx,_fontsize)
+                      mainFigure,mainAx,_fontsize,_Draw_GS,levels_pandas.iloc[_start_level]['Level energy'])
