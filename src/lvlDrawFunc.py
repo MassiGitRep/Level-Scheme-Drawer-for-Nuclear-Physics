@@ -38,7 +38,7 @@ import matplotlib.patches as mpatches
 # call recursively all the other functions to build the level scheme deciding 
 # which levels and transitions should be drawn or not.
 
-def drawArrow(_number, _delta_x, _x_max, _energy_label, _y_init, _y_final, 
+def drawArrow(_number, _delta_x, _x_max, _energy_label,_energy_label_rotation, _y_init, _y_final, 
               _multipolarity, _arrow_color, _arrow_width, _arrow_head_width, 
               _arrow_head_length, _fig, _subplot, _fontsize):
      
@@ -57,10 +57,11 @@ def drawArrow(_number, _delta_x, _x_max, _energy_label, _y_init, _y_final,
                    color=_arrow_color);
     
     _subplot.annotate(str("%.0f" % _energy_label) + " " + str(_multipolarity), 
-                      (_delta_x*_number, _y_init), rotation=60, rotation_mode=
+                      (_delta_x*_number, _y_init), rotation=_energy_label_rotation, rotation_mode=
                       'anchor', xytext=(_delta_x*_number, _y_init+0.01*_y_init),
                       fontsize=_fontsize, horizontalalignment='left', 
-                      verticalalignment='bottom')
+                      verticalalignment='bottom',
+                      color=_arrow_color)
     
     
 def drawLevel(_energy, _y_labels_position, _spin_parity, _level_color, _x_max, 
@@ -74,10 +75,10 @@ def drawLevel(_energy, _y_labels_position, _spin_parity, _level_color, _x_max,
     
     _subplot.annotate("%.0f" % _energy, xy=(0, _energy), xytext=(_x_fig_start,
                         _y_labels_position), fontsize=_fontsize, 
-                        horizontalalignment='right', verticalalignment='center')  
+                        horizontalalignment='right', verticalalignment='center', color=_level_color)  
     _subplot.annotate(_spin_parity, xy=(_x_max, _energy), xytext=(_x_fig_end, 
                         _y_labels_position), fontsize=_fontsize, 
-                        horizontalalignment='left', verticalalignment='center')
+                        horizontalalignment='left', verticalalignment='center', color=_level_color)
     
     if(_spin_parity!=""):
         _spin_label = mpatches.FancyArrowPatch((_x_max, _energy), 
@@ -102,7 +103,7 @@ def drawGS(_y_position, _energy_label, _spin_parity, _x_max, _x_fig_start,
     _subplot.annotate(_spin_parity, xy=(_x_max,_y_position), xytext=(_x_fig_end
                         ,_y_position), fontsize=_fontsize, 
                         horizontalalignment='left', verticalalignment='center')
-    _subplot.annotate(r"42Ca", xy=(_x_max/2.,0),xytext=(_x_max/2.,-2*_fontsize), 
+    _subplot.annotate(r"44Ca", xy=(_x_max/2.,0),xytext=(_x_max/2.,-2*_fontsize), 
                         fontsize=_fontsize, horizontalalignment='center', 
                         verticalalignment='top')
 
@@ -122,7 +123,7 @@ def drawLevelScheme(_fig, _subplot, levels_pandas, transitions_pandas, _delta_x,
                     _x_left_label_distance, _fontsize, _start_level, 
                     _stop_level, _start_transitions, _stop_transitions, 
                     _arrow_width, _arrow_head_width, _arrow_head_length, 
-                    _arrow_color, _Draw_GS, _Draw_All_Aligned):
+                    _arrow_color, _Draw_GS, _Draw_All_Aligned, _energy_label_rotation):
     
     mainFigure = _fig
     mainAx = _subplot
@@ -164,6 +165,7 @@ def drawLevelScheme(_fig, _subplot, levels_pandas, transitions_pandas, _delta_x,
         for i in range(_start_transitions,_stop_transitions):
             drawArrow(i-_start_transitions+0.5,_delta_x,_x_max,
                       transitions_pandas.iloc[i]['Transition energy'],
+                      _energy_label_rotation,
                       transitions_pandas.iloc[i]['Initial level'],
                       transitions_pandas.iloc[i]['Final level'],
                       transitions_pandas.iloc[i]['Multipolarity'],
@@ -175,6 +177,7 @@ def drawLevelScheme(_fig, _subplot, levels_pandas, transitions_pandas, _delta_x,
         for i in range(_start_transitions,_stop_transitions):
             drawArrow(1,_delta_x,_x_max,
                       transitions_pandas.iloc[i]['Transition energy'],
+                      _energy_label_rotation,
                       transitions_pandas.iloc[i]['Initial level'],
                       transitions_pandas.iloc[i]['Final level'],
                       transitions_pandas.iloc[i]['Multipolarity'],

@@ -37,7 +37,7 @@ class SetParameters(tk.Tk):
         super().__init__()
 
         self.title("Nuclear Physics Level Scheme")
-        self.geometry("900x600")
+        self.geometry("900x700")
        
         self.protocol("WM_DELETE_WINDOW", self.destroy) # Overriding X button 
         # behavior to correctly close the window and destroy the relative process
@@ -45,7 +45,7 @@ class SetParameters(tk.Tk):
         # self.Quit_button = tk.Button(text="Quit", command=self.destroy, 
         # font=font.Font(family='Helvetica', size=15))
 
-        self.Upload_button = tk.Button(text="Upload", command=self.UploadFiles,
+        self.Upload_button = tk.Button(text="Upload Files/ Update Values", command=self.UploadFiles,
                                        font=font.Font(family='Helvetica', 
                                                       size=15))
         self.Draw_button = tk.Button(text="Draw", command=self.Draw, 
@@ -74,8 +74,10 @@ class SetParameters(tk.Tk):
         self.Arrow_width = tk.DoubleVar(self,0.001)
         self.Arrow_head_width = tk.DoubleVar(self,0.005*self.XMax.get())
         self.Arrow_head_length = tk.DoubleVar(self,40)
+        self.Energy_label_rotation = tk.DoubleVar(self,60)
         self.Min_vert_label_dist = tk.DoubleVar(self,80)
         self.Fontsize = tk.IntVar(self,16)
+        self.Level_spacing = tk.DoubleVar(self,100)
         self.Arrow_color = tk.StringVar(self,"black")
         self.Start_level = tk.IntVar(self,0)
         self.Stop_level = tk.IntVar(self,-1)
@@ -90,8 +92,10 @@ class SetParameters(tk.Tk):
         self.Arrow_width.trace_add("write", self.PrintUpdatedValue)
         self.Arrow_head_width.trace_add("write", self.PrintUpdatedValue)
         self.Arrow_head_length.trace_add("write", self.PrintUpdatedValue)
+        self.Energy_label_rotation.trace_add("write", self.PrintUpdatedValue)
         self.Min_vert_label_dist.trace_add("write", self.PrintUpdatedValue)
         self.Fontsize.trace_add("write", self.PrintUpdatedValue)
+        self.Level_spacing.trace_add("write", self.PrintUpdatedValue)
         self.Arrow_color.trace_add("write", self.PrintUpdatedValue)
         self.Start_level.trace_add("write", self.PrintUpdatedValue)
         self.Stop_level.trace_add("write", self.PrintUpdatedValue)
@@ -117,6 +121,10 @@ class SetParameters(tk.Tk):
                                                 , font=font.Font(family=
                                                                   'Helvetica', 
                                                                   size=15))
+        self.Energy_label_rotation_label = tk.Label(self, text="Energy Label rotation:"
+                                                , font=font.Font(family=
+                                                                  'Helvetica', 
+                                                                  size=15))
         self.Min_vert_label_dist_label = tk.Label(self, 
                                     text="Minimum Vertical Level Separation: ", 
                                     font=font.Font(family='Helvetica', 
@@ -124,6 +132,9 @@ class SetParameters(tk.Tk):
         self.Fontsize_label = tk.Label(self, text="Fontsize: ", 
                                        font=font.Font(family='Helvetica', 
                                                       size=15))
+        self.Level_spacing_label = tk.Label(self, text="Level spacing: ",
+                                      font=font.Font(family='Helvetica',
+                                                     size=15))
         self.Arrow_color_label = tk.Label(self, text="Arrow Color: ", 
                                           font=font.Font(family='Helvetica', 
                                                          size=15))
@@ -162,6 +173,12 @@ class SetParameters(tk.Tk):
                                                 font=font.Font(
                                                     family='Helvetica', 
                                                     size=15))
+        self.Energy_label_rotation_entry = tk.Entry(self, 
+                                                textvariable=
+                                                self.Energy_label_rotation, 
+                                                font=font.Font(
+                                                    family='Helvetica', 
+                                                    size=15))
         self.Min_vert_label_dist_entry = tk.Entry(self, 
                                                   textvariable=
                                                   self.Min_vert_label_dist, 
@@ -171,6 +188,9 @@ class SetParameters(tk.Tk):
         self.Fontsize_entry = tk.Entry(self, textvariable=self.Fontsize, 
                                        font=font.Font(family='Helvetica', 
                                                       size=15))
+        self.Level_spacing_entry = tk.Entry(self, textvariable=self.Level_spacing,
+                                      font=font.Font(family='Helvetica',
+                                                     size=15))
         self.Arrow_color_entry = tk.Entry(self, textvariable=self.Arrow_color,
                                           font=font.Font(family='Helvetica',
                                                          size=15))
@@ -197,32 +217,36 @@ class SetParameters(tk.Tk):
         self.Arrow_width_label.grid(row=6, column=0, padx=5, pady=5)
         self.Arrow_head_width_label.grid(row=7, column=0, padx=5, pady=5)
         self.Arrow_head_length_label.grid(row=8, column=0, padx=5, pady=5)
-        self.Min_vert_label_dist_label.grid(row=9, column=0, padx=5, pady=5)
-        self.Fontsize_label.grid(row=10, column=0, padx=5, pady=5)
-        self.Arrow_color_label.grid(row=11, column=0, padx=5, pady=5)
-        self.Start_level_label.grid(row=12, column=0, padx=5, pady=5)
-        self.Stop_level_label.grid(row=13, column=0, padx=5, pady=5)
-        self.Start_transition_label.grid(row=14, column=0, padx=5, pady=5)
-        self.Stop_transition_label.grid(row=15, column=0, padx=5, pady=5)
+        self.Energy_label_rotation_label.grid(row=9, column=0, padx=5, pady=5)
+        self.Min_vert_label_dist_label.grid(row=10, column=0, padx=5, pady=5)
+        self.Fontsize_label.grid(row=11, column=0, padx=5, pady=5)
+        self.Level_spacing_label.grid(row=12, column=0, padx=5, pady=5)
+        self.Arrow_color_label.grid(row=13, column=0, padx=5, pady=5)
+        self.Start_level_label.grid(row=14, column=0, padx=5, pady=5)
+        self.Stop_level_label.grid(row=15, column=0, padx=5, pady=5)
+        self.Start_transition_label.grid(row=16, column=0, padx=5, pady=5)
+        self.Stop_transition_label.grid(row=17, column=0, padx=5, pady=5)
 
         self.Transition_file_entry.grid(row=0, column=1, padx=5, pady=5)
         self.Level_file_entry.grid(row=1, column=1, padx=5, pady=5)
         self.Arrow_width_entry.grid(row=6, column=1, padx=5, pady=5)
         self.Arrow_head_width_entry.grid(row=7, column=1, padx=5, pady=5)
         self.Arrow_head_length_entry.grid(row=8, column=1, padx=5, pady=5)
-        self.Min_vert_label_dist_entry.grid(row=9, column=1, padx=5, pady=5)
-        self.Fontsize_entry.grid(row=10, column=1, padx=5, pady=5)
-        self.Arrow_color_entry.grid(row=11, column=1, padx=5, pady=5)
-        self.Start_level_entry.grid(row=12, column=1, padx=5, pady=5)
-        self.Stop_level_entry.grid(row=13, column=1, padx=5, pady=5)
-        self.Start_transition_entry.grid(row=14, column=1, padx=5, pady=5)
-        self.Stop_transition_entry.grid(row=15, column=1, padx=5, pady=5)
+        self.Energy_label_rotation_entry.grid(row=9, column=1, padx=5, pady=5)
+        self.Min_vert_label_dist_entry.grid(row=10, column=1, padx=5, pady=5)
+        self.Fontsize_entry.grid(row=11, column=1, padx=5, pady=5)
+        self.Level_spacing_entry.grid(row=12, column=1, padx=5, pady=5)
+        self.Arrow_color_entry.grid(row=13, column=1, padx=5, pady=5)
+        self.Start_level_entry.grid(row=14, column=1, padx=5, pady=5)
+        self.Stop_level_entry.grid(row=15, column=1, padx=5, pady=5)
+        self.Start_transition_entry.grid(row=16, column=1, padx=5, pady=5)
+        self.Stop_transition_entry.grid(row=17, column=1, padx=5, pady=5)
 
         self.Upload_button.grid(row=0, column=2, padx=50, pady=5)
         #self.Quit_button.grid(row=17,column=1, padx=50, pady=10)
         self.Draw_button.grid(row=8, column=2, padx=50, pady=5)
-        self.Draw_GS_button.grid(row=16, column=0, padx=5, pady=5)
-        self.Draw_All_Aligned_button.grid(row=16, column=1, padx=5, pady=5)
+        self.Draw_GS_button.grid(row=18, column=0, padx=5, pady=5)
+        self.Draw_All_Aligned_button.grid(row=18, column=1, padx=5, pady=5)
    
     def PrintUpdatedValue(self, *args):
         pass
@@ -256,7 +280,8 @@ class SetParameters(tk.Tk):
                                         dtype={'Level energy': float,
                                                'Spin-Parity': str, 
                                                'Energy Label Position': str, 
-                                               'Level color': str})
+                                               'Level color': str},
+                                        comment='#')
             levels_pandas = levels_pandas.sort_values(by=['Level energy'])                  
             levels_pandas = levels_pandas.reset_index(drop=True)    
             
@@ -270,7 +295,9 @@ class SetParameters(tk.Tk):
                                                     "Initial level",
                                                     "Final level", 
                                                     "Multipolarity", 
-                                                    "Transition color"])
+                                                    "Transition color"],
+                                             comment='#')
+
             transitions_pandas = transitions_pandas.sort_values(by=[
                 "Initial level", "Transition energy"], ascending=True)
             transitions_pandas = transitions_pandas.reset_index(drop=True)
@@ -298,7 +325,7 @@ class SetParameters(tk.Tk):
                         levels_pandas.iloc[i]['Level energy'] < 
                         levels_pandas.iloc[i-1]['Energy Label Position'] ):
 
-                        levels_pandas.at[i,'Energy Label Position'] = levels_pandas.iloc[i-1]['Energy Label Position'] + self.Min_vert_label_dist.get()
+                        levels_pandas.at[i,'Energy Label Position'] = levels_pandas.iloc[i-1]['Energy Label Position'] + self.Level_spacing.get()
                                                                                     
                     else:                                                                   
                         levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]
@@ -359,7 +386,8 @@ class SetParameters(tk.Tk):
                             self.Arrow_head_width.get(), 
                             self.Arrow_head_length.get(), 
                             self.Arrow_color.get(), self.Draw_GS.get(), 
-                            self.Draw_All_Aligned.get())
+                            self.Draw_All_Aligned.get(),
+                            self.Energy_label_rotation.get())
            
             drawing_window = tk.Tk()
             drawing_window.title("Level Scheme")
