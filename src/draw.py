@@ -59,6 +59,13 @@ class SetParameters(tk.Tk):
                                              font=font.Font(family='Helvetica', 
                                                             size=15))
         
+        self.Draw_Shrink = tk.BooleanVar(self, 0)
+        self.Draw_Shrink_button = tk.Checkbutton(self, text="Optimize space", 
+                                             variable=self.Draw_Shrink, onvalue=1, 
+                                             offvalue=0, 
+                                             font=font.Font(family='Helvetica', 
+                                                            size=15))
+
         self.Draw_All_Aligned = tk.BooleanVar(self, 0)
         self.Draw_All_Aligned_button = tk.Checkbutton(self, 
                 text="Draw Transitions Vertically Aligned", 
@@ -75,8 +82,8 @@ class SetParameters(tk.Tk):
         self.Arrow_head_width = tk.DoubleVar(self,0.005*self.XMax.get())
         self.Arrow_head_length = tk.DoubleVar(self,40)
         self.Energy_label_rotation = tk.DoubleVar(self,90)
-        self.Min_vert_label_dist = tk.DoubleVar(self,80)
-        self.Fontsize = tk.IntVar(self,16)
+        self.Min_vert_label_dist = tk.DoubleVar(self,100)
+        self.Fontsize = tk.IntVar(self,10)
         self.Arrow_color = tk.StringVar(self,"black")
         self.Start_level = tk.IntVar(self,0)
         self.Stop_level = tk.IntVar(self,-1)
@@ -236,7 +243,8 @@ class SetParameters(tk.Tk):
         #self.Quit_button.grid(row=17,column=1, padx=50, pady=10)
         self.Draw_button.grid(row=8, column=2, padx=50, pady=5)
         self.Draw_GS_button.grid(row=18, column=0, padx=5, pady=5)
-        self.Draw_All_Aligned_button.grid(row=18, column=1, padx=5, pady=5)
+        self.Draw_Shrink_button.grid(row=18, column=1, padx=5, pady=5)
+        self.Draw_All_Aligned_button.grid(row=18, column=2, padx=5, pady=5)
    
     def PrintUpdatedValue(self, *args):
         pass
@@ -304,21 +312,41 @@ class SetParameters(tk.Tk):
            
 
             levels_pandas.at[0,'Energy Label Position'] = levels_pandas.iloc[0]['Level energy']
-                                                                                    
-            # differentiating energies value and labels
-            if(levels_pandas.shape[0]>=2):
-                for i in range(1,levels_pandas.shape[0]):                                       
-                    if(abs( levels_pandas.iloc[i]['Level energy'] - levels_pandas.iloc[i-1]['Energy Label Position'] ) < self.Min_vert_label_dist.get() or levels_pandas.iloc[i]['Level energy'] < levels_pandas.iloc[i-1]['Energy Label Position'] ):
-                        if(i>2 and abs(levels_pandas['Energy Label Position'][i-1] - levels_pandas['Energy Label Position'][i-2]) > 2*self.Min_vert_label_dist.get()):
-                            levels_pandas.at[i-1,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] - self.Min_vert_label_dist.get()
-                            levels_pandas.at[i,'Energy Label Position'] = levels_pandas.at[i,'Level energy']
-                        else:
-                            levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] + self.Min_vert_label_dist.get()
-                                                                                    
-                    else:                                                                   
-                        levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]
-            else: 
-                levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]                                                                       
+            
+            if(not self.Draw_Shrink.get()):                                                                        
+                if(levels_pandas.shape[0]>=2):
+                    for i in range(1,levels_pandas.shape[0]):                                       
+                        if(abs( levels_pandas.iloc[i]['Level energy'] - levels_pandas.iloc[i-1]['Energy Label Position'] ) < self.Min_vert_label_dist.get() or levels_pandas.iloc[i]['Level energy'] < levels_pandas.iloc[i-1]['Energy Label Position'] ):
+                            if(i>2 and abs(levels_pandas['Energy Label Position'][i-1] - levels_pandas['Energy Label Position'][i-2]) > 2*self.Min_vert_label_dist.get()):
+                                levels_pandas.at[i-1,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] - self.Min_vert_label_dist.get()
+                                levels_pandas.at[i,'Energy Label Position'] = levels_pandas.at[i,'Level energy']
+                            else:
+                                levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] + self.Min_vert_label_dist.get()
+                                                                                        
+                        else:                                                                   
+                            levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]
+                else: 
+                    levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]
+
+            else:
+                if(levels_pandas.shape[0]>=2):
+                    for i in range(1,levels_pandas.shape[0]):                                       
+                        #if(abs( levels_pandas.iloc[i]['Level energy'] - levels_pandas.iloc[i-1]['Energy Label Position'] ) < self.Min_vert_label_dist.get() or levels_pandas.iloc[i]['Level energy'] < levels_pandas.iloc[i-1]['Energy Label Position'] ):
+                        if(i < levels_pandas.shape[0]-1):
+                            if(i>2 and abs(levels_pandas['Energy Label Position'][i-1] - levels_pandas['Energy Label Position'][i-2]) > 2*self.Min_vert_label_dist.get()):
+                                levels_pandas.at[i-1,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] - self.Min_vert_label_dist.get()
+                                levels_pandas.at[i,'Energy Label Position'] = levels_pandas.at[i,'Level energy']
+                            else:
+                                levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] + self.Min_vert_label_dist.get()
+                                                                                        
+                        elif(i == levels_pandas.shape[0]-1):
+                            print("sono dentro al elif")
+                            if(levels_pandas['Level energy'][i] < levels_pandas['Energy Label Position'][i-1]):
+                                levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] + self.Min_vert_label_dist.get()
+                            else:
+                                levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]
+                        #else: 
+                        #    levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]                                                                       
         
             levels_pandas.fillna('', inplace=True)   
             

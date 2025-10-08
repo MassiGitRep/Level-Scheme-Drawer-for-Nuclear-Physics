@@ -96,12 +96,12 @@ def drawLevel(_energy, _y_labels_position, _spin_parity, _level_color, _x_max,
     if(_spin_parity!=""):
         _spin_label = mpatches.FancyArrowPatch((_x_max, _energy), 
                         (_x_right_label_distance, _y_labels_position), 
-                        arrowstyle='-', mutation_scale=20)
+                        arrowstyle='-', mutation_scale=20, color=_level_color)
         _subplot.add_patch(_spin_label)
     
     _energy_label = mpatches.FancyArrowPatch((0, _energy), 
                         (_x_left_label_distance,_y_labels_position),
-                        arrowstyle='-', mutation_scale=20)
+                        arrowstyle='-', mutation_scale=20, color=_level_color)
     _subplot.add_patch(_energy_label)
     
    
