@@ -117,7 +117,7 @@ def drawGS(_y_position, _energy_label, _spin_parity, _x_max, _x_fig_start,
                         ,_y_position), fontsize=_fontsize, 
                         horizontalalignment='left', verticalalignment='center')
     _subplot.annotate(r"44Ca", xy=(_x_max/2.,0),xytext=(_x_max/2.,-2*_fontsize), 
-                        fontsize=_fontsize, horizontalalignment='center', 
+                        fontsize=_fontsize*3, horizontalalignment='center', 
                         verticalalignment='top')
 
     _spin_label = mpatches.FancyArrowPatch((_x_max, _y_position),

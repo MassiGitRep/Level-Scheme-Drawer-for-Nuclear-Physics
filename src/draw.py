@@ -330,8 +330,10 @@ class SetParameters(tk.Tk):
 
             else:
                 if(levels_pandas.shape[0]>=2):
+                    if(self.Draw_GS.get() == 1):
+                        levels_pandas.at[0,'Energy Label Position'] = self.Min_vert_label_dist.get()
+
                     for i in range(1,levels_pandas.shape[0]):                                       
-                        #if(abs( levels_pandas.iloc[i]['Level energy'] - levels_pandas.iloc[i-1]['Energy Label Position'] ) < self.Min_vert_label_dist.get() or levels_pandas.iloc[i]['Level energy'] < levels_pandas.iloc[i-1]['Energy Label Position'] ):
                         if(i < levels_pandas.shape[0]-1):
                             if(i>2 and abs(levels_pandas['Energy Label Position'][i-1] - levels_pandas['Energy Label Position'][i-2]) > 2*self.Min_vert_label_dist.get()):
                                 levels_pandas.at[i-1,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] - self.Min_vert_label_dist.get()
@@ -340,14 +342,11 @@ class SetParameters(tk.Tk):
                                 levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] + self.Min_vert_label_dist.get()
                                                                                         
                         elif(i == levels_pandas.shape[0]-1):
-                            print("sono dentro al elif")
                             if(levels_pandas['Level energy'][i] < levels_pandas['Energy Label Position'][i-1]):
                                 levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Energy Label Position'][i-1] + self.Min_vert_label_dist.get()
                             else:
                                 levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]
-                        #else: 
-                        #    levels_pandas.at[i,'Energy Label Position'] = levels_pandas['Level energy'][i]                                                                       
-        
+            
             levels_pandas.fillna('', inplace=True)   
             
             _x_fig_start = -self.XMax.get()*self.Width_const.get()
