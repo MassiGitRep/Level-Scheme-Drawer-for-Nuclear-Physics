@@ -19,7 +19,7 @@ Problems to be solved:
 - If matplotlib canvas is closed (pressing X button) after resizing the figure (using the 'Configure Subplots' button) TKinter can't invoke destroy Method and an error is raised. 
 
 GUI preview
-![GUI preview](https://github.com/MassiGitRep/Level-Scheme-Drawer-for-Nuclear-Physics/blob/main/images/GUI_new.png)
+![GUI preview](https://github.com/MassiGitRep/Level-Scheme-Drawer-for-Nuclear-Physics/blob/main/images/GUI_new_new.png)
 
 \
 \
