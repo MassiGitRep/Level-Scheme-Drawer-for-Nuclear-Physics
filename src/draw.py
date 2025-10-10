@@ -22,7 +22,7 @@ except ImportError:
 try:
         import pandas as pd
 except ImportError:
-        print("Unable to import TKinter, please install it before proceeding.")
+        print("Unable to import Pandas, please install it before proceeding.")
 
 try:
         from lvlDrawFunc import *
@@ -37,40 +37,40 @@ class SetParameters(tk.Tk):
         super().__init__()
 
         self.title("Nuclear Physics Level Scheme")
-        self.geometry("900x700")
+        self.geometry("1200x700")
        
         self.protocol("WM_DELETE_WINDOW", self.destroy) # Overriding X button 
         # behavior to correctly close the window and destroy the relative process
 
         # self.Quit_button = tk.Button(text="Quit", command=self.destroy, 
-        # font=font.Font(family='Helvetica', size=15))
+        # font=font.Font(family='Noto Sans', size=15))
 
         self.Upload_button = tk.Button(text="Upload Files/ Update Values", command=self.UploadFiles,
-                                       font=font.Font(family='Helvetica', 
+                                       font=font.Font(family='Noto Sans', 
                                                       size=15))
         self.Draw_button = tk.Button(text="Draw", command=self.Draw, 
-                                     font=font.Font(family='Helvetica', 
+                                     font=font.Font(family='Noto Sans', 
                                                     size=15))
 
         self.Draw_GS = tk.BooleanVar(self, 1)
         self.Draw_GS_button = tk.Checkbutton(self, text="Draw G.S.", 
                                              variable=self.Draw_GS, onvalue=1, 
                                              offvalue=0, 
-                                             font=font.Font(family='Helvetica', 
+                                             font=font.Font(family='Noto Sans', 
                                                             size=15))
         
         self.Draw_Shrink = tk.BooleanVar(self, 0)
         self.Draw_Shrink_button = tk.Checkbutton(self, text="Optimize space", 
                                              variable=self.Draw_Shrink, onvalue=1, 
                                              offvalue=0, 
-                                             font=font.Font(family='Helvetica', 
+                                             font=font.Font(family='Noto Sans', 
                                                             size=15))
 
         self.Draw_All_Aligned = tk.BooleanVar(self, 0)
         self.Draw_All_Aligned_button = tk.Checkbutton(self, 
                 text="Draw Transitions Vertically Aligned", 
                 variable=self.Draw_All_Aligned, onvalue=1, 
-                offvalue=0, font=font.Font(family='Helvetica', size=15))
+                offvalue=0, font=font.Font(family='Noto Sans', size=15))
 
         self.Uploaded_flag = tk.BooleanVar(self,0) 
         self.XMax = tk.DoubleVar(self,5)
@@ -89,6 +89,8 @@ class SetParameters(tk.Tk):
         self.Stop_level = tk.IntVar(self,-1)
         self.Start_transition = tk.IntVar(self,0)
         self.Stop_transition = tk.IntVar(self,-1)
+        self.Nucleus_name = tk.StringVar(self,"42Ca")
+        self.Nucleus_name_fontsize = tk.IntVar(self,20)
         self.DeltaX = tk.DoubleVar(self)
 
         self.create_widget()
@@ -106,110 +108,129 @@ class SetParameters(tk.Tk):
         self.Stop_level.trace_add("write", self.PrintUpdatedValue)
         self.Start_transition.trace_add("write", self.PrintUpdatedValue)
         self.Stop_transition.trace_add("write", self.PrintUpdatedValue)
+        self.Stop_transition.trace_add("write", self.PrintUpdatedValue)
 
     def create_widget(self):
 
         self.Transition_file_label = tk.Label(self, text="Transition Filename: "
                                               , font=font.Font(
-                                                  family='Helvetica', size=15))
+                                                  family='Noto Sans', size=15))
         self.Level_file_label = tk.Label(self, text="Level Filename: ", 
-                                         font=font.Font(family='Helvetica', 
+                                         font=font.Font(family='Noto Sans', 
                                                         size=15))
         self.Arrow_width_label = tk.Label(self, text="Arrow Width: ", 
-                                          font=font.Font(family='Helvetica', 
+                                          font=font.Font(family='Noto Sans', 
                                                          size=15))
         self.Arrow_head_width_label = tk.Label(self, text="Arrow Head Width: ", 
                                                font=font.Font(family=
-                                                              'Helvetica', 
+                                                              'Noto Sans', 
                                                               size=15))
         self.Arrow_head_length_label = tk.Label(self, text="Arrow Head Length:"
                                                 , font=font.Font(family=
-                                                                  'Helvetica', 
+                                                                  'Noto Sans', 
                                                                   size=15))
         self.Energy_label_rotation_label = tk.Label(self, text="Energy Label rotation:"
                                                 , font=font.Font(family=
-                                                                  'Helvetica', 
+                                                                  'Noto Sans', 
                                                                   size=15))
         self.Min_vert_label_dist_label = tk.Label(self, 
                                     text="Minimum Vertical Level Separation: ", 
-                                    font=font.Font(family='Helvetica', 
+                                    font=font.Font(family='Noto Sans', 
                                     size=15))
         self.Fontsize_label = tk.Label(self, text="Fontsize: ", 
-                                       font=font.Font(family='Helvetica', 
+                                       font=font.Font(family='Noto Sans', 
                                                       size=15))
         self.Arrow_color_label = tk.Label(self, text="Arrow Color: ", 
-                                          font=font.Font(family='Helvetica', 
+                                          font=font.Font(family='Noto Sans', 
                                                          size=15))
         self.Start_level_label = tk.Label(self, text="Start Level: ", 
-                                          font=font.Font(family='Helvetica', 
+                                          font=font.Font(family='Noto Sans', 
                                                          size=15))
         self.Stop_level_label = tk.Label(self, text="Stop Level: ", 
-                                         font=font.Font(family='Helvetica', 
+                                         font=font.Font(family='Noto Sans', 
                                                         size=15))
         self.Start_transition_label = tk.Label(self, text="Start Transition: ", 
-                                            font=font.Font(family='Helvetica', 
+                                            font=font.Font(family='Noto Sans', 
                                                            size=15))
         self.Stop_transition_label = tk.Label(self, text="Stop Transition: ", 
-                                              font=font.Font(family='Helvetica',
+                                              font=font.Font(family='Noto Sans',
+                                                            size=15))
+        self.Nucleus_name_label = tk.Label(self, text="Nucleus Name: ", 
+                                              font=font.Font(family='Noto Sans',
+                                                            size=15))
+        self.Nucleus_name_fontsize_label = tk.Label(self, text="Name Fontsize: ", 
+                                              font=font.Font(family='Noto Sans',
                                                             size=15))
 
         self.Transition_file_entry = tk.Entry(self, 
                                               textvariable=self.Transition_file,
-                                              font=font.Font(family='Helvetica',
+                                              font=font.Font(family='Noto Sans',
                                                              size=15))
         self.Level_file_entry = tk.Entry(self, textvariable=self.Level_file,
-                                         font=font.Font(family='Helvetica',
+                                         font=font.Font(family='Noto Sans',
                                                         size=15))
         self.Arrow_width_entry = tk.Entry(self, textvariable=self.Arrow_width,
-                                          font=font.Font(family='Helvetica',
+                                          font=font.Font(family='Noto Sans',
                                                          size=15))
         self.Arrow_head_width_entry = tk.Entry(self, 
                                                textvariable=
                                                self.Arrow_head_width, 
                                                font=font.Font(
-                                                   family='Helvetica', 
+                                                   family='Noto Sans', 
                                                    size=15))
         self.Arrow_head_length_entry = tk.Entry(self, 
                                                 textvariable=
                                                 self.Arrow_head_length, 
                                                 font=font.Font(
-                                                    family='Helvetica', 
+                                                    family='Noto Sans', 
                                                     size=15))
         self.Energy_label_rotation_entry = tk.Entry(self, 
                                                 textvariable=
                                                 self.Energy_label_rotation, 
                                                 font=font.Font(
-                                                    family='Helvetica', 
+                                                    family='Noto Sans', 
                                                     size=15))
         self.Min_vert_label_dist_entry = tk.Entry(self, 
                                                   textvariable=
                                                   self.Min_vert_label_dist, 
                                                   font=font.Font(
-                                                      family='Helvetica', 
+                                                      family='Noto Sans', 
                                                       size=15))
         self.Fontsize_entry = tk.Entry(self, textvariable=self.Fontsize, 
-                                       font=font.Font(family='Helvetica', 
+                                       font=font.Font(family='Noto Sans', 
                                                       size=15))
         self.Arrow_color_entry = tk.Entry(self, textvariable=self.Arrow_color,
-                                          font=font.Font(family='Helvetica',
+                                          font=font.Font(family='Noto Sans',
                                                          size=15))
         self.Start_level_entry = tk.Entry(self, textvariable=self.Start_level, 
-                                          font=font.Font(family='Helvetica', 
+                                          font=font.Font(family='Noto Sans', 
                                                          size=15))
         self.Stop_level_entry = tk.Entry(self, textvariable=self.Stop_level, 
-                                         font=font.Font(family='Helvetica', 
+                                         font=font.Font(family='Noto Sans', 
                                                         size=15))
         self.Start_transition_entry = tk.Entry(self, 
                                                textvariable=
                                                self.Start_transition, 
                                                font=font.Font(
-                                                   family='Helvetica', 
+                                                   family='Noto Sans', 
                                                    size=15))
         self.Stop_transition_entry = tk.Entry(self, 
                                               textvariable=
                                               self.Stop_transition, 
-                                              font=font.Font(family='Helvetica',
+                                              font=font.Font(family='Noto Sans',
                                                              size=15))
+        self.Nucleus_name_entry = tk.Entry(self, 
+                                              textvariable=
+                                              self.Nucleus_name, 
+                                              font=font.Font(family='Noto Sans',
+                                                             size=15))
+        self.Nucleus_name_fontsize_entry = tk.Entry(self, 
+                                              textvariable=
+                                              self.Nucleus_name_fontsize, 
+                                              font=font.Font(family='Noto Sans',
+                                                             size=15))
+
+
 
         self.Transition_file_label.grid(row=0, column=0, padx=5, pady=5)
         self.Level_file_label.grid(row=1, column=0, padx=5, pady=5)
@@ -224,6 +245,9 @@ class SetParameters(tk.Tk):
         self.Stop_level_label.grid(row=15, column=0, padx=5, pady=5)
         self.Start_transition_label.grid(row=16, column=0, padx=5, pady=5)
         self.Stop_transition_label.grid(row=17, column=0, padx=5, pady=5)
+        self.Nucleus_name_label.grid(row=18, column=0, padx=5, pady=5)
+        self.Nucleus_name_fontsize_label.grid(row=18, column=2, padx=5, pady=5)
+
 
         self.Transition_file_entry.grid(row=0, column=1, padx=5, pady=5)
         self.Level_file_entry.grid(row=1, column=1, padx=5, pady=5)
@@ -238,13 +262,15 @@ class SetParameters(tk.Tk):
         self.Stop_level_entry.grid(row=15, column=1, padx=5, pady=5)
         self.Start_transition_entry.grid(row=16, column=1, padx=5, pady=5)
         self.Stop_transition_entry.grid(row=17, column=1, padx=5, pady=5)
+        self.Nucleus_name_entry.grid(row=18, column=1, padx=5, pady=5)
+        self.Nucleus_name_fontsize_entry.grid(row=18, column=3, padx=5, pady=5)
 
         self.Upload_button.grid(row=0, column=2, padx=50, pady=5)
         #self.Quit_button.grid(row=17,column=1, padx=50, pady=10)
         self.Draw_button.grid(row=8, column=2, padx=50, pady=5)
-        self.Draw_GS_button.grid(row=18, column=0, padx=5, pady=5)
-        self.Draw_Shrink_button.grid(row=18, column=1, padx=5, pady=5)
-        self.Draw_All_Aligned_button.grid(row=18, column=2, padx=5, pady=5)
+        self.Draw_GS_button.grid(row=19, column=0, padx=5, pady=5)
+        self.Draw_Shrink_button.grid(row=19, column=1, padx=5, pady=5)
+        self.Draw_All_Aligned_button.grid(row=19, column=2, padx=5, pady=5)
    
     def PrintUpdatedValue(self, *args):
         pass
@@ -391,7 +417,7 @@ class SetParameters(tk.Tk):
             drawing_fig = Figure()
             drawing_subplot = drawing_fig.add_subplot(111)
 
-            drawLevelScheme(drawing_fig, drawing_subplot, levels_pandas, 
+            drawLevelScheme(self.Nucleus_name.get(),self.Nucleus_name_fontsize.get(),drawing_fig, drawing_subplot, levels_pandas, 
                             transitions_pandas, self.DeltaX.get(), 
                             self.XMax.get(), _x_fig_start, _x_fig_end, 
                             _x_right_label_distance, _x_left_label_distance, 

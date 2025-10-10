@@ -105,7 +105,7 @@ def drawLevel(_energy, _y_labels_position, _spin_parity, _level_color, _x_max,
     _subplot.add_patch(_energy_label)
     
    
-def drawGS(_y_position, _energy_label, _spin_parity, _x_max, _x_fig_start, 
+def drawGS(_nucleus_name, _nucleus_name_fontsize, _y_position, _energy_label, _spin_parity, _x_max, _x_fig_start, 
            _x_fig_end, _x_right_label_distance, _x_left_label_distance, _fig, 
            _subplot,_fontsize, _color="black", _width=2):
     
@@ -116,8 +116,8 @@ def drawGS(_y_position, _energy_label, _spin_parity, _x_max, _x_fig_start,
     _subplot.annotate(_spin_parity, xy=(_x_max,_y_position), xytext=(_x_fig_end
                         ,_y_position), fontsize=_fontsize, 
                         horizontalalignment='left', verticalalignment='center')
-    _subplot.annotate(r"44Ca", xy=(_x_max/2.,0),xytext=(_x_max/2.,-2*_fontsize), 
-                        fontsize=_fontsize*3, horizontalalignment='center', 
+    _subplot.annotate(_nucleus_name, xy=(_x_max/2.,0),xytext=(_x_max/2.,-2*_fontsize), 
+                        fontsize=_nucleus_name_fontsize, horizontalalignment='center', 
                         verticalalignment='top')
 
     _spin_label = mpatches.FancyArrowPatch((_x_max, _y_position),
@@ -131,7 +131,7 @@ def drawGS(_y_position, _energy_label, _spin_parity, _x_max, _x_fig_start,
     _subplot.add_patch(_energy_label)
 
 
-def drawLevelScheme(_fig, _subplot, levels_pandas, transitions_pandas, _delta_x,
+def drawLevelScheme(_nucleus_name, _nucleus_name_fontsize, _fig, _subplot, levels_pandas, transitions_pandas, _delta_x,
                     _x_max, _x_fig_start, _x_fig_end, _x_right_label_distance,
                     _x_left_label_distance, _fontsize, _start_level, 
                     _stop_level, _start_transitions, _stop_transitions, 
@@ -168,7 +168,7 @@ def drawLevelScheme(_fig, _subplot, levels_pandas, transitions_pandas, _delta_x,
     
     # Check if G.S. need to be drawn
     if(_Draw_GS == 1):    
-        drawGS(0,"G.S.","0+",_x_max,_x_fig_start,_x_fig_end,
+        drawGS(_nucleus_name, _nucleus_name_fontsize, 0,"G.S.","0+",_x_max,_x_fig_start,_x_fig_end,
                _x_right_label_distance,_x_left_label_distance,mainFigure,
                mainAx,_fontsize)
     else:
